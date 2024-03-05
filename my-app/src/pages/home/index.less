@@ -1,0 +1,320 @@
+.translation-page {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.main-content {
+    margin: 20px;
+    padding: 20px 100px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 12px;
+}
+
+.language-selectors {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.language-selector label {
+    margin-right: 10px;
+}
+
+.text-areas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    // grid-gap: 20px;
+    margin-bottom: 20px;
+}
+
+.input-text,
+.translated-text {
+    box-sizing: border-box; /* 新增这个属性 */
+    width: 100%;
+    height: 350px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+.translate-button {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.translate-button:hover {
+    background-color: #357abd;
+}
+.header {
+    /* 给header添加更炫酷的样式 */
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    h1 {
+        padding-left: 200px;
+    }
+}
+
+.login-button {
+    /* 登录按钮的样式 */
+    background-color: #4caf50; /* 绿色 */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-button:hover {
+    background-color: #45a049; /* 深绿色 */
+}
+
+.user-avatar {
+    /* 用户头像的样式 */
+    width: 40px;
+    height: 40px;
+    background-color: #ddd; /* 灰色背景，假设头像 */
+    border-radius: 50%; /* 圆形 */
+    display: flex;
+}
+
+.main-list {
+    padding: 20px 300px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .test {
+        font-size: 18px;
+        font-weight: 600;
+        padding-bottom: 20px;
+    }
+    .styled-list {
+        list-style: none;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: fit-content;
+    }
+
+    .styled-list li {
+        padding: 10px 15px;
+        border-bottom: 1px solid #eaeaea;
+        margin-bottom: 8px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .styled-list li:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    /* 添加一些过渡效果 */
+    .styled-list li:hover {
+        background-color: #f2f2f2;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+}
+.footer {
+    height: 300px;
+    margin-top: 20px;
+    padding: 20px 100px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 12px;
+}
+textarea {
+    resize: none;
+}
+textarea:focus {
+    // background-color: #e8f0fe; /* 被选中时的背景颜色 */
+    border-color: #4a90e2; /* 被选中时的边框颜色 */
+    outline: none; /* 移除默认的焦点轮廓线 */
+}
+.footer {
+    background-color: #f8f9fa; // 页脚背景色
+    padding: 20px 40px; // 页脚内边距
+    // display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px; // 字体大小
+    color: #6c757d; // 字体颜色
+
+    > div {
+        display: flex;
+        flex-direction: column;
+
+        &:first-child {
+            // 语言选择器部分
+            width: 20%; // 语言选择器占据的宽度
+        }
+
+        &:last-child {
+            // 页脚内容部分
+            flex: 1;
+            display: flex;
+            justify-content: space-between; // 平均分布各个子元素
+            align-items: flex-start;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            font-size: 14px;
+            color: #6c757d;
+
+            > div {
+                display: flex;
+                flex-direction: column;
+
+                > div:first-child {
+                    font-weight: bold; // 首个子元素（标题）加粗
+                    margin-bottom: 10px;
+                }
+
+                > div {
+                    cursor: pointer; // 鼠标悬停指针样式
+                    margin: 5px 0; // 子元素间距
+
+                    &:hover {
+                        text-decoration: underline; // 鼠标悬停下划线
+                    }
+                }
+            }
+        }
+    }
+
+    // 响应式适配
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+
+        > div {
+            width: 100%; // 全宽
+
+            &:last-child {
+                flex-direction: column;
+                margin-top: 20px; // 页脚内容部分与语言选择器部分间距
+
+                > div {
+                    margin-bottom: 20px; // 子元素间距增加
+                }
+            }
+        }
+    }
+}
+
+.translation-page {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.header {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+
+    h1 {
+        margin: 0; // 重置h1默认的margin
+    }
+
+    @media (max-width: 768px) {
+        padding: 10px;
+        h1 {
+            font-size: 20px; // 减小标题字体大小
+        }
+    }
+}
+
+.main-content {
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 12px;
+
+    @media (max-width: 768px) {
+        padding: 20px 10px; // 减小内边距
+    }
+}
+
+.language-selectors {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: column; // 切换为垂直布局
+
+        .language-selector {
+            margin-bottom: 10px; // 增加元素间距
+        }
+    }
+}
+
+.text-areas {
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr; // 单列布局
+        grid-gap: 10px; // 减小间距
+    }
+}
+
+.translate-button {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+
+    &:hover {
+        background-color: #357abd;
+    }
+}
+
+.main-list {
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        padding: 20px 0;
+    }
+}
+
+.footer {
+    background-color: #f8f9fa;
+    padding: 20px 40px;
+    font-size: 14px;
+    color: #6c757d;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px 20px;
+    }
+}

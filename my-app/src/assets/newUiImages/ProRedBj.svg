@@ -1,0 +1,20 @@
+<svg width="300" height="99" viewBox="0 0 300 99" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 1000005037">
+<rect id="Rectangle 34626070" width="300" height="99" rx="16" fill="url(#paint0_linear_2505_12869)"/>
+<g id="Group 1000005036">
+<mask id="mask0_2505_12869" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="300" height="99">
+<rect id="Rectangle 34626071" width="300" height="99" rx="16" fill="#544146"/>
+</mask>
+<g mask="url(#mask0_2505_12869)">
+<ellipse id="Ellipse 2359" cx="211.68" cy="0.582275" rx="135.68" ry="122.582" fill="white" fill-opacity="0.06"/>
+<ellipse id="Ellipse 2360" cx="252.031" cy="-1.24068" rx="106.425" ry="96.1519" fill="white" fill-opacity="0.1"/>
+</g>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_2505_12869" x1="294.348" y1="70.8038" x2="31.3238" y2="36.0836" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E2364B"/>
+<stop offset="1" stop-color="#EC4E61"/>
+</linearGradient>
+</defs>
+</svg>
