@@ -17,3 +17,49 @@ export const loginByEmail = (pay: any) => {
         ...pay
     });
 };
+export const sendEmailCode = (email: any) => {
+    return config.post('/user/sendEmailCode', {
+        email
+    });
+};
+export const registByEmail = (pay: object | undefined) => {
+    return config.post('/user/registByEmail', {
+        ...pay
+    });
+};
+export const resetPassword = (pay: object | undefined) => {
+    return config.post('/user/resetPwd', {
+        ...pay
+    });
+};
+export const subscribeOfStripe = (user_id: any, level: any) => {
+    return config.post(
+        '/api/stripe/subscribe',
+        {
+            user_id,
+            level
+        },
+        {
+            showLoading: true
+        }
+    );
+};
+export const getTokenPackages = () => {
+    return config.get('/api/tokenPackages');
+};
+
+export const getVipLevels = () => {
+    return config.get('/api/web/vipLevels');
+};
+export const createOrderOfStripe = (user_id: any, package_id: any) => {
+    return config.post(
+        '/api/stripe/createOrder',
+        {
+            user_id,
+            package_id
+        },
+        {
+            showLoading: true
+        }
+    );
+};

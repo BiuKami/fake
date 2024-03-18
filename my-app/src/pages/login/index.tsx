@@ -30,7 +30,9 @@ const LoginPage: React.FC = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-
+    const handleForgotPasswordClick = () => {
+        navigate(`/register?forgot-password=true`);
+    };
     return (
         <div className="login-wrapper">
             <div className="login-header">
@@ -45,26 +47,28 @@ const LoginPage: React.FC = () => {
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
-                    <p className="login-text">登录你的账户</p>
-                    <Form.Item name="email" rules={[{required: true, message: '请输入您的邮箱!'}]}>
-                        <Input placeholder="邮箱" />
+                    <p className="login-text">Log in to your account</p>
+                    <Form.Item name="email" rules={[{required: true, message: 'Please enter your email address!'}]}>
+                        <Input placeholder="email" />
                     </Form.Item>
 
-                    <Form.Item name="password" rules={[{required: true, message: '请输入您的密码!'}]}>
-                        <Input.Password placeholder="密码" />
+                    <Form.Item name="password" rules={[{required: true, message: 'Please enter your password!'}]}>
+                        <Input.Password placeholder="password" />
                     </Form.Item>
 
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="login-form-button" loading={loading}>
-                            登录
+                            Login
                         </Button>
                     </Form.Item>
 
                     <p className="login-register-text">
-                        还没有账户？<a href="/register">注册</a>
+                        Don't have an account yet?<a href="/register">register</a>
                     </p>
                     <p className="login-forgot-password">
-                        <a href="/forgot-password">忘记密码?</a>
+                        <Button type="link" onClick={handleForgotPasswordClick}>
+                            forgot password?
+                        </Button>
                     </p>
                 </Form>
             </div>

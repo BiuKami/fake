@@ -10,9 +10,11 @@ import {lazy, Suspense} from 'react';
 const Home = lazy(() => import('@/pages/home'));
 const Transfer = lazy(() => import('@/pages/transfer'));
 const CallbackIndex = lazy(() => import('@/pages/callbackIndex'));
+const CallbackPrice = lazy(() => import('@/pages/callbackPrice'));
 const Register = lazy(() => import('@/pages/register'));
 const Login = lazy(() => import('@/pages/login'));
 const Price = lazy(() => import('@/pages/price'));
+const New = lazy(() => import('@/pages/new'));
 
 function RootRoute(): JSX.Element {
     return (
@@ -20,11 +22,13 @@ function RootRoute(): JSX.Element {
             <Suspense>
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/new" element={<New />} />
                     <Route path="/transfer" element={<Transfer />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/price" element={<Price />} />
                     <Route path="/Register" element={<Register />} />
                     <Route path="/callbackIndex" element={<CallbackIndex />} />
+                    <Route path="/callbackPrice" element={<CallbackPrice />} />
                 </Routes>
             </Suspense>
         </>

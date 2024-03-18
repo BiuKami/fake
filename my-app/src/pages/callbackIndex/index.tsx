@@ -12,10 +12,15 @@
  */
 
 import {useEffect} from 'react';
+import {Spin} from 'antd';
 const CallbackIndex = () => {
-    // useEffect(() => {
-    //     window.location.replace('https://beta.nsfwcharacter.ai/index');
-    // }, []);
-    return <></>;
+    useEffect(() => {
+        window.close();
+    }, []);
+    return (
+        <div className="container">
+            <Spin spinning={true} fullscreen />
+        </div>
+    );
 };
 export default CallbackIndex;

@@ -14,17 +14,5 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, './src') //配置@别名
         }
-    },
-    server: {
-        port: 5001,
-        host: 'localhost',
-        open: true,
-        proxy: {
-            '/api': {
-                target: 'https://test.beyondedgellc.com', //目标url
-                changeOrigin: true, //支持跨域
-                rewrite: path => path.replace(/^\/api/, '')
-            }
-        }
     }
 });

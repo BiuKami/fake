@@ -11,6 +11,8 @@ import {message} from 'antd';
  * @return void
  */
 export const checkStatus = (status: number): void => {
+    console.log(status, 'status--');
+
     switch (status) {
         case 400:
             message.error('请求失败！请您稍后重试');

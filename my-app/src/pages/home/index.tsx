@@ -18,10 +18,10 @@ interface UserData {
 const UserProfilePopoverContent: React.FC<{userData: UserData; logout: () => void}> = ({userData, logout}) => {
     return (
         <div>
-            <p>用户名: {userData.username}</p>
-            <p>会员等级: {userData.level}</p>
+            <p>user: {userData.username}</p>
+            <p>Membership level: {userData.level}</p>
             <Button onClick={logout} type="primary">
-                退出登录
+                Log out
             </Button>
         </div>
     );
@@ -31,6 +31,7 @@ const TranslationPage = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState<UserData | null>(null);
     const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [inputText, setInputText] = useState('');
     const [translatedText, setTranslatedText] = useState('');
@@ -42,29 +43,41 @@ const TranslationPage = () => {
 
         // 将JSON字符串转换回对象
         const user = userString ? JSON.parse(userString) : null;
-        console.log(user, 'user--');
         setUserData(user);
     }, []);
     const handleVisibleChange = (newVisible: boolean) => {
         setVisible(newVisible);
     };
     const handleTranslateClick = async () => {
-        // TODO: 这里应该调用翻译API来获取翻译结果
-        // 模拟翻译过程
-        const res = await translate({
-            user_id: userData?.user_id,
-            src_lang: sourceLang,
-            target_lang: targetLang,
-            message: inputText
-        });
-        console.log();
-        const msg = res?.result?.target_msg;
-        setTranslatedText(msg);
-        console.log('handle click patreon:', res);
+        if (userData) {
+            setLoading(true);
+            // TODO: 这里应该调用翻译API来获取翻译结果
+            // 模拟翻译过程
+            const res = await translate({
+                user_id: userData?.user_id,
+                src_lang: sourceLang,
+                target_lang: targetLang,
+                message: inputText
+            });
+            console.log();
+            const msg = res?.result?.target_msg;
+            setLoading(false);
+            setTranslatedText(msg);
+            console.log('handle click patreon:', res);
+        } else {
+            navigate('/login');
+        }
     };
     const handleLogin = () => {
-        // TODO: 实现登录逻辑
-        navigate('/login');
+        if (userData) {
+            navigate('/price', {
+                state: {
+                    userData
+                }
+            });
+        } else {
+            navigate('/login');
+        }
     };
     // 假设有一个logout函数用于处理退出登录的逻辑
     const logout = () => {
@@ -78,11 +91,11 @@ const TranslationPage = () => {
         <>
             <div className="translation-page">
                 <header className="header">
-                    <h1>在线翻译</h1>
+                    <h1>AIdeepTranslate</h1>
                     {userData ? (
                         <Popover
                             content={<UserProfilePopoverContent userData={userData} logout={logout} />}
-                            title="用户信息"
+                            title="useInfo"
                             trigger="click"
                             open={visible}
                             onOpenChange={handleVisibleChange}
@@ -97,64 +110,91 @@ const TranslationPage = () => {
                         </Popover>
                     ) : (
                         <button className="login-button" onClick={handleLogin}>
-                            登录
+                            Login
                         </button>
                     )}
                 </header>
                 <main className="main-content">
                     <div className="language-selectors">
                         <div className="language-selector">
-                            <label>源语言:</label>
+                            <label>source language:</label>
                             <select value={sourceLang} onChange={e => setSourceLang(e.target.value)}>
                                 {/* 这里可以添加更多的语言选项 */}
-                                <option value="en">英语</option>
-                                <option value="de">德语</option>
+                                <option value="en">English</option>
+                                <option value="de">German</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="fr">Hindi</option>
+                                <option value="it">Italy</option>
+                                <option value="ja">ja</option>
+                                <option value="ko">Korean</option>
+                                <option value="pt">Portuguese</option>
+                                <option value="ru">Russian</option>
                             </select>
                         </div>
                         <div className="language-selector">
-                            <label>目标语言:</label>
+                            <label>target language:</label>
                             <select value={targetLang} onChange={e => setTargetLang(e.target.value)}>
-                                {/* 这里可以添加更多的语言选项 */}
-                                <option value="en">英语</option>
-                                <option value="de">德语</option>
+                                <option value="en">English</option>
+                                <option value="de">German</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="fr">Hindi</option>
+                                <option value="it">Italy</option>
+                                <option value="ja">ja</option>
+                                <option value="ko">Korean</option>
+                                <option value="pt">Portuguese</option>
+                                <option value="ru">Russian</option>
                             </select>
                         </div>
                     </div>
                     <div className="text-areas">
                         <textarea
                             className="input-text"
-                            placeholder="输入文本"
+                            placeholder="Input content"
                             value={inputText}
                             onChange={e => setInputText(e.target.value)}
                         />
-                        <textarea className="translated-text" placeholder="翻译结果" value={translatedText} readOnly />
+                        <textarea
+                            className="translated-text"
+                            placeholder="Translation results"
+                            value={translatedText}
+                            readOnly
+                        />
                     </div>
-                    <button className="translate-button" onClick={handleTranslateClick}>
-                        翻译
-                    </button>
+                    <Button className="translate-button" onClick={handleTranslateClick} loading={loading}>
+                        translate
+                    </Button>
                 </main>
                 <div className="main-list">
-                    <div>
-                        <div className="test">解锁DeepL全部功能 – 免费试用DeepL Pro</div>
-                        <button className="login-button" onClick={handleLogin}>
-                            免费试用30天Pro
-                        </button>
+                    <div style={{display: 'flex'}}>
+                        <div>
+                            <div className="test">Unlock all AIdeepTranslate functions for free trial</div>
+                            <button className="login-button" onClick={handleLogin}>
+                                Free trial for 30 days
+                            </button>
+                        </div>
+                        {/* <div style={{paddingLeft: 10}}>
+                            <div style={{fontWeight: 600}}>解锁AIdeepTranslate全部功能</div>
+                            <div style={{paddingTop: 4}}>最大程度数据安全</div>
+                            <div style={{paddingTop: 4}}>无限制文本翻译</div>
+                            <div style={{paddingTop: 4}}>翻译并编辑更多文档</div>
+                        </div> */}
                     </div>
                     <div style={{display: 'flex'}}>
                         <div style={{paddingRight: 80}}>
                             <ul className="styled-list">
-                                <li>你正在使用DeepL免费版</li>
-                                <li>翻译多达1,500个字符</li>
-                                <li>翻译3份不可编辑文档/月</li>
-                                <li>10个术语表条目</li>
+                                <div style={{fontWeight: 600}}>Upgrade Pro membership</div>
+                                <div style={{paddingTop: 14}}>200000 translated words</div>
+                                <div style={{paddingTop: 14}}>2wAi translation</div>
+                                <div style={{paddingTop: 14}}>100 times Ai assistant</div>
                             </ul>
                         </div>
                         <div>
                             <ul className="styled-list">
-                                <li>你正在使用DeepL免费版</li>
-                                <li>翻译多达1,500个字符</li>
-                                <li>翻译3份不可编辑文档/月</li>
-                                <li>10个术语表条目</li>
+                                <div style={{fontWeight: 600}}>Upgrade Pro+ membership</div>
+                                <div style={{paddingTop: 14}}>Unlimited translation</div>
+                                <div style={{paddingTop: 14}}>AI Assistant Unlimited Use</div>
                             </ul>
                         </div>
                     </div>
@@ -165,15 +205,14 @@ const TranslationPage = () => {
                     <Language />
                 </div>
                 <div>
-                    <div>3213</div>
+                    <div>AIdeepTranslate</div>
                     <div>
-                        <div>资源</div>
-                        <div>隐私政策</div>
-                        <div>条款&条件</div>
+                        <div onClick={() => navigate('/price')}>Price</div>
+                        <a href="/PRIVACY-POLICY.html">Privacy Policy</a>
+                        <a href="/TERMS-OF-USE.html">Terms & conditions</a>
                     </div>
                     <div>
-                        <div>公司</div>
-                        <div>新闻</div>
+                        <a href="/FutureMind.html">company</a>
                     </div>
                 </div>
             </div>

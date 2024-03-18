@@ -5,8 +5,8 @@ import {message} from 'antd';
 import {getToken} from '@/utils/localStorage';
 import {useAuthSuccess} from '@/utils/utils';
 enum ResultEnum {
-    SUCCESS = 200,
-    ERROR = 500,
+    SUCCESS = 0,
+    ERROR = 1,
     OVERDUE = 10001,
     TIMEOUT = 6000,
     TYPE = 'success'
@@ -14,13 +14,14 @@ enum ResultEnum {
 
 interface Result {
     code: number;
-    message: string;
+    meg: string;
 }
 
 // * 请求响应参数(包含data)
 interface ResultData<T = unknown> extends Result {
     result: any;
     data?: T;
+    msg?: string;
 }
 
 const axiosCanceler = new AxiosCanceler();
@@ -29,7 +30,7 @@ const config = {
     // 默认地址请求地址，可在 .env 开头文件中修改
     baseURL: import.meta.env.VITE_APP_BASE_API as string,
     // 设置超时时间（10s）
-    timeout: ResultEnum.TIMEOUT as number,
+    // timeout: ResultEnum.TIMEOUT as number,
     // 跨域时候允许携带凭证
     // withCredentials: true,
     headers: {
@@ -90,13 +91,15 @@ class RequestHttp {
                 }
                 // * 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
                 if (data.code && data.code !== ResultEnum.SUCCESS) {
-                    return Promise.reject(data);
+                    return data;
                 }
                 // * 成功请求
                 return data;
             },
             async (error: AxiosError) => {
                 const {response} = error;
+                console.log(error, 'error--');
+
                 // 根据响应的错误状态码，做不同的处理
                 if (response) return checkStatus(response.status);
                 // 服务器结果都没有返回(可能服务器错误可能客户端断网)，断网处理:可以跳转到断网页面

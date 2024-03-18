@@ -1,22 +1,86 @@
-import React, {useState} from 'react';
-import {Form, Input, Button, Typography} from 'antd';
+import React, {useState, useEffect} from 'react';
+import {Form, Input, Button, Typography, message} from 'antd';
 import {MailOutlined, LockOutlined} from '@ant-design/icons';
+import {useNavigate, useLocation} from 'react-router-dom';
+import {sendEmailCode, registByEmail, loginByEmail, resetPassword} from '@/api';
+
 import './index.less';
 
 const {Title, Link} = Typography;
 
 const RegisterPage: React.FC = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const forgotPassword = queryParams.get('forgot-password');
+
     const [email, setEmail] = useState('');
     const [currentStep, setCurrentStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [timer, setTimer] = useState(0);
+    let countdownInterval: ReturnType<typeof setInterval>;
+
+    useEffect(() => {
+        return () => {
+            if (countdownInterval) clearInterval(countdownInterval);
+        };
+    }, []);
 
     const onFirstStepFinish = (values: any) => {
         setEmail(values.email);
         setCurrentStep(2); // Proceed to next step
     };
 
-    const onFinalStepFinish = (values: any) => {
+    const sendVerificationCode = async () => {
+        setLoading(true);
+
+        const res = await sendEmailCode(email);
+        if (res.code === 0) {
+            setTimeout(() => {
+                setLoading(false);
+                message.success(`A verification code has been sent to ${email}`);
+                // Start a 60-second countdown
+                setTimer(60);
+                countdownInterval = setInterval(() => {
+                    setTimer(prevTimer => {
+                        if (prevTimer <= 1) {
+                            clearInterval(countdownInterval);
+                            return 0;
+                        }
+                        return prevTimer - 1;
+                    });
+                }, 1000);
+            }, 1500);
+        } else {
+            message.success(res?.msg);
+            setLoading(false);
+        }
+    };
+
+    const onFinalStepFinish = async (values: any) => {
         console.log('Received values of form: ', {email, ...values});
-        // Here you can handle the final registration logic
+        //  verify the code and handle the registration
+        const res = forgotPassword
+            ? await resetPassword({email, ...values, invitation_code: ''})
+            : await registByEmail({email, ...values, invitation_code: ''});
+        if (res.code !== 0) {
+            message.error(res?.msg);
+            return;
+        }
+        if (res.code === 0) {
+            loginByEmail({email, ...values})
+                .then(response => {
+                    setLoading(false);
+                    if (response.code === 0) {
+                        localStorage.setItem('user', JSON.stringify(response?.result));
+                        // 跳转到主页面
+                        navigate('/');
+                    }
+                })
+                .catch(() => {
+                    setLoading(false);
+                });
+        }
     };
 
     const goToFirstStep = () => {
@@ -27,7 +91,7 @@ const RegisterPage: React.FC = () => {
         <div className="register-page-container">
             {currentStep === 1 && (
                 <>
-                    <Title level={2}>Register</Title>
+                    <Title level={2}>{forgotPassword ? 'forgot-Password' : 'Register'}</Title>
                     <Form
                         name="register_step_one"
                         className="register-step-one"
@@ -57,7 +121,7 @@ const RegisterPage: React.FC = () => {
 
             {currentStep === 2 && (
                 <>
-                    <Title level={2}>Register</Title>
+                    <Title level={2}>{forgotPassword ? 'forgot-Password' : 'Register'}</Title>
                     <Title level={4}>Welcome, {email}</Title>
                     <Form name="register_step_two" className="register-step-two" onFinish={onFinalStepFinish}>
                         <Form.Item
@@ -66,6 +130,24 @@ const RegisterPage: React.FC = () => {
                             hasFeedback
                         >
                             <Input.Password prefix={<LockOutlined />} placeholder="Set a password" />
+                        </Form.Item>
+                        <Form.Item
+                            name="email_valid_code"
+                            rules={[{required: true, message: 'Please input the verification code!'}]}
+                        >
+                            <Input
+                                prefix={<MailOutlined />}
+                                placeholder="Verification Code"
+                                suffix={
+                                    <Button
+                                        onClick={sendVerificationCode}
+                                        loading={loading}
+                                        disabled={loading || timer > 0}
+                                    >
+                                        {timer > 0 ? `Resend (${timer}s)` : 'Send Code'}
+                                    </Button>
+                                }
+                            />
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit">
