@@ -15,7 +15,7 @@ import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import {Spin, message} from 'antd';
 import {subscribeOfStripe, createOrderOfStripe} from '@/api';
-
+import {useAuthSuccess} from '@/utils/utils';
 import './index.less';
 const CallbackIndex = () => {
     const [messageApi] = message.useMessage();
@@ -25,9 +25,12 @@ const CallbackIndex = () => {
     const user_id = queryParams.get('userId');
     const level = queryParams.get('level');
     const stripe_pid = queryParams.get('stripe_pid');
+    const tokenInstance = queryParams.get('tokenInstance');
+    const authSuccess = useAuthSuccess();
     // //普通购买
     const handlePaymentOfStript = async () => {
-        const res = await createOrderOfStripe(Number(user_id), stripe_pid);
+        authSuccess(tokenInstance);
+        const res = await createOrderOfStripe(Number(user_id), stripe_pid, tokenInstance);
         if (res?.code === 0) {
             const url = res.result?.gateway_url;
             window.location.href = url;
@@ -40,13 +43,13 @@ const CallbackIndex = () => {
     };
     // //订阅
     const handleSubSubscribe = async () => {
+        authSuccess(tokenInstance);
         //已订阅
         // if (is_subscribe !== 0) {
         //     toastShow(I18n('You are already a member, please unsubscribe first'));
         //     return;
         // }
-
-        const res = await subscribeOfStripe(Number(user_id), Number(level));
+        const res = await subscribeOfStripe(Number(user_id), Number(level), tokenInstance);
         if (res?.code === 0) {
             const url = res.result?.gateway_url;
             window.location.href = url;

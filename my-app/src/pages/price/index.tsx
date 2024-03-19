@@ -27,7 +27,7 @@ const MembershipPage: React.FC = () => {
                 content: 'Please select an item'
             });
         const packageId = packageSelected?.stripe_pid;
-        const res = await createOrderOfStripe(stateParams.userData.user_id, packageId);
+        const res = await createOrderOfStripe(stateParams.userData.user_id, packageId, '');
         if (res?.code === 0) {
             const url = res.result?.gateway_url;
 
@@ -53,7 +53,7 @@ const MembershipPage: React.FC = () => {
                 type: 'error',
                 content: 'Empty error'
             });
-        const res = await subscribeOfStripe(stateParams.userData.user_id, level.level);
+        const res = await subscribeOfStripe(stateParams.userData.user_id, level.level, '');
         if (res?.code === 0) {
             const url = res.result?.gateway_url;
             window.open(url);

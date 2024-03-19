@@ -55,7 +55,8 @@ class RequestHttp {
                 // * 需要添加的token 自行设置
                 const token: string | null = '';
                 tokenInstance = getToken();
-                if (tokenInstance) {
+
+                if (tokenInstance && tokenInstance !== 'undefined') {
                     config.headers['Authorization'] = `Bearer ${tokenInstance}`;
                 }
                 const newConfig = {

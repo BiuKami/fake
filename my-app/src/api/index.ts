@@ -32,7 +32,9 @@ export const resetPassword = (pay: object | undefined) => {
         ...pay
     });
 };
-export const subscribeOfStripe = (user_id: any, level: any) => {
+export const subscribeOfStripe = (user_id: any, level: any, tokenInstance: string | null | undefined) => {
+    console.log(tokenInstance, 'tokenInstance--');
+
     return config.post(
         '/api/stripe/subscribe',
         {
@@ -40,7 +42,11 @@ export const subscribeOfStripe = (user_id: any, level: any) => {
             level
         },
         {
-            showLoading: true
+            headers: tokenInstance
+                ? {
+                      Authorization: `Bearer ${tokenInstance}`
+                  }
+                : {}
         }
     );
 };
@@ -51,7 +57,7 @@ export const getTokenPackages = () => {
 export const getVipLevels = () => {
     return config.get('/api/web/vipLevels');
 };
-export const createOrderOfStripe = (user_id: any, package_id: any) => {
+export const createOrderOfStripe = (user_id: any, package_id: any, tokenInstance: string | null | undefined) => {
     return config.post(
         '/api/stripe/createOrder',
         {
@@ -59,7 +65,11 @@ export const createOrderOfStripe = (user_id: any, package_id: any) => {
             package_id
         },
         {
-            showLoading: true
+            headers: tokenInstance
+                ? {
+                      Authorization: `Bearer ${tokenInstance}`
+                  }
+                : {}
         }
     );
 };
